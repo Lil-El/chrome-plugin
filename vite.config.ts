@@ -1,16 +1,32 @@
-import vue from "@vitejs/plugin-vue";
 import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
+import tailwindcss from "@tailwindcss/vite";
+import { viteStaticCopy } from "vite-plugin-static-copy";
 
 export default defineConfig({
   resolve: {
-    alias: {},
+    alias: {
+      "@": "/src",
+    },
   },
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    tailwindcss(),
+    viteStaticCopy({
+      targets: [
+        {
+          src: "src/static/*",
+          dest: "",
+        },
+      ],
+    }),
+  ],
   build: {
     rollupOptions: {
       input: {
-        popup: "popup/index.html",
-        content: "content/index.ts",
+        popup: "index.html",
+        content: "src/content/index.ts",
+        background: "src/background/service-worker.ts",
       },
       output: {
         entryFileNames: "[name]/[name].js",

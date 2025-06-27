@@ -8,8 +8,8 @@
     "moduleResolution": "bundler",
     "types": ["chrome", "vite/client"],
     "paths": {
-      "~/*": ["popup/*", "content/*"],
+      "~/*": ["src/*"]
     }
   },
-  "include": ["popup/**/*.ts", "popup/**/*.d.ts", "content/**/*.ts", "content/**/*.d.ts"]
+  "include": ["src/**/*.ts", "src/**/*.d.ts"]
 }
