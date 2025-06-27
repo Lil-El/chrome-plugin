@@ -1,17 +1,11 @@
 <template>
-  <div class="popup-container">
-    <h1>Welcome here.</h1>
+  <div class="w-50 h-70 p-1 bg-blue-100">
+    <h1>{{ msg }}</h1>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+const msg = ref("Hello World!");
 </script>
 
-<style scoped>
-.popup-container {
-  width: 200px;
-  height: 260px;
-  background-color: aliceblue;
-}
-</style>
+<style scoped></style>

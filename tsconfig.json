@@ -8,8 +8,8 @@
     "moduleResolution": "bundler",
     "types": ["chrome", "vite/client"],
     "paths": {
-      "~/*": ["src/*"]
+      "@/*": ["src/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts"]
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "auto-imports.d.ts"],
 }
