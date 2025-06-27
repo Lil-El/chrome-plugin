@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "target": "ES2022",
+    "module": "ESNext",
+    "lib": ["ES2022", "DOM"],
+    "strict": true,
+    "moduleResolution": "bundler",
+    "types": ["chrome", "vite/client"],
+    "paths": {
+      "~/*": ["popup/*", "content/*"],
+    }
+  },
+  "include": ["popup/**/*.ts", "popup/**/*.d.ts", "content/**/*.ts", "content/**/*.d.ts"]
+}

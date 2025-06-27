@@ -1,3 +1,3 @@
 # Chrome Plugin
 
-[Development Document](https://chrome.cenchy.com/i18n.html)
+[Chrome Extension](https://developer.chrome.google.cn/docs/extensions?authuser=6&hl=zh-cn)
