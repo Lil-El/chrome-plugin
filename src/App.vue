@@ -1,11 +1,46 @@
 <template>
-  <div class="w-50 h-70 p-1 bg-blue-100">
-    <h1>{{ msg }}</h1>
+  <div class="w-50 h-70 p-1 flex flex-col items-center relative overflow-hidden">
+    <h1 class="text-xl mb-2">{{ title }}</h1>
+
+    <div
+      class="w-20 aspect-square rounded-3xl flex justify-center items-center cursor-pointer shadow shadow-gray-300 hover:shadow-gray-700"
+      :style="{ backgroundColor: color }"
+      title="copy"
+      @click="handleCopy"
+    >
+      <span class="text-3xl invert">+</span>
+    </div>
+    <span class="mt-1 text-xs text-gray-500 hover:text-gray-700 cursor-pointer" @click.stop="handleAbsorb"
+      >点击吸色</span
+    >
+
+    <div
+      v-if="showTip"
+      class="p-1 px-2 rounded-md text-xs justify-self-end bg-green-100 text-green-500 absolute bottom-2 animate-translate"
+    >
+      Copy Color Success
+    </div>
   </div>
 </template>
 
 <script setup>
-const msg = ref("Hello World!");
-</script>
+const title = ref("Color Picker");
 
-<style scoped></style>
+const color = ref("#000000");
+
+const showTip = ref(false);
+
+function handleAbsorb() {
+  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    chrome.runtime.sendMessage({ type: "absorbColor", tabId: tabs[0].id });
+  });
+}
+
+const handleCopy = () => {
+  navigator.clipboard.writeText(color.value);
+  showTip.value = true;
+  setTimeout(() => {
+    showTip.value = false;
+  }, 2000);
+};
+</script>

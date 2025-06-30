@@ -1,1 +1,24 @@
 @import "tailwindcss";
+
+@theme {
+  --animate-translate: translate 2s ease forwards;
+
+  @keyframes translate {
+    0% {
+      display: none;
+      translate: 0 40px;
+    }
+
+    25%,
+    75% {
+      display: block;
+      translate: 0 0;
+    }
+
+
+    100% {
+      display: none;
+      translate: 0 40px;
+    }
+  }
+}

@@ -30,10 +30,15 @@ export default defineConfig({
       input: {
         popup: "index.html",
         content: "src/content/index.ts",
+        absorbColor: "src/content/absorbColor.ts",
         background: "src/background/service-worker.ts",
       },
       output: {
-        entryFileNames: "[name]/[name].js",
+        entryFileNames(chunkInfo) {
+          const dirName = chunkInfo.facadeModuleId?.split("\\").at(-2);
+          if (chunkInfo.name === "popup") return "[name]/[name].js";
+          else return `${dirName}/[name].js`;
+        },
       },
     },
     outDir: "dist",
