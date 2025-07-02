@@ -75,8 +75,6 @@ async function screenshotPage() {
 
   const canvas = createPage(imageBitmap.width, imageBitmap.height);
   const ctx = canvas.getContext("2d");
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
   ctx?.drawImage(imageBitmap, 0, 0);
 
   track.stop();
@@ -86,11 +84,11 @@ async function screenshotPage() {
 
 function createPage(width, height) {
   const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
   canvas.style.position = "fixed";
   canvas.style.left = "0px";
   canvas.style.top = "0px";
-  canvas.style.width = width + "px";
-  canvas.style.height = height + "px";
   canvas.style.zIndex = "99999";
   canvas.style.cursor = "crosshair";
   document.body.appendChild(canvas);
