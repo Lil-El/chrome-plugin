@@ -24,11 +24,21 @@
 </template>
 
 <script setup>
+import { onMounted } from "vue";
+
 const title = ref("Color Picker");
 
 const color = ref("#000000");
 
 const showTip = ref(false);
+
+onMounted(() => {
+  chrome.storage.local.get("pickedColor", (result) => {
+    if (result.pickedColor) {
+      color.value = result.pickedColor;
+    }
+  });
+});
 
 function handleAbsorb() {
   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {

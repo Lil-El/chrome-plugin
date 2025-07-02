@@ -21,15 +21,12 @@ function readyAbsorbColor(tabId: chrome.tabs.Tab["id"]) {
    * 在 background 中通过executeScript加载 lib，contentScript 才能使用；
    * 由于 contentScript 和 浏览器的环境不同，所以lib无法直接在浏览器中访问；
    */
-  chrome.scripting
-    .executeScript({
-      target: { tabId: tabId! },
-      files: ["libs/html2canvas.js"],
-    })
-    .then(() => {
-      chrome.scripting.executeScript({
-        target: { tabId: tabId! },
-        files: ["content/absorbColor.js"],
-      });
-    });
+  // chrome.scripting.executeScript({
+  //   target: { tabId: tabId! },
+  //   files: ["libs/html2canvas.js"],
+  // });
+  chrome.scripting.executeScript({
+    target: { tabId: tabId! },
+    files: ["content/absorbColor.js"],
+  });
 }

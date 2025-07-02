@@ -1,9 +1,9 @@
-const canvasSize = { width: 240, height: 150 };
-
 main();
 
 async function main() {
-  const { imageBitmap, canvas: pageCanvas } = await screenshotPage();
+  const canvasSize = { width: 240, height: 150 };
+
+  const { canvas: pageCanvas } = await screenshotPage();
 
   const glsCanvas = createGlass(canvasSize.width, canvasSize.height);
   const glsCtx = glsCanvas.getContext("2d");
@@ -14,8 +14,13 @@ async function main() {
     "click",
     (e) => {
       abortCtrl.abort();
+      pageCanvas.remove();
 
-      const { x, y } = e;
+      chrome.storage.local.set({
+        pickedColor: getCenterColor(pageCanvas, e.clientX, e.clientY),
+      });
+
+      glsCanvas.remove();
     },
     {
       once: true,
@@ -30,7 +35,7 @@ async function main() {
       glsCanvas.style.left = `${x + 10}px`;
       glsCanvas.style.top = `${y + 10}px`;
 
-      renderCanvas(pageCanvas, glsCtx, x, y);
+      renderCanvas(canvasSize, pageCanvas, glsCtx, x, y);
     },
     {
       signal: abortCtrl.signal,
@@ -38,19 +43,25 @@ async function main() {
   );
 }
 
-async function renderCanvas(imageBitmap, context, x, y) {
-  context.clearRect(0, 0, canvasSize.width, canvasSize.height);
-  context.drawImage(
-    imageBitmap,
-    x - canvasSize.width / 20,
-    y - canvasSize.width / 20,
-    canvasSize.width / 10,
-    canvasSize.height / 10,
-    0,
-    0,
-    canvasSize.width,
-    canvasSize.height
-  );
+async function renderCanvas(size, target, context, x, y) {
+  context.clearRect(0, 0, size.width, size.height);
+
+  context.drawImage(target, x - 52 / 2, y - 32 / 2, 52, 32, 0, 0, 300, 150);
+
+  context.strokeStyle = "green";
+  context.lineWidth = 1;
+  context.beginPath();
+
+  context.moveTo(150, 0); // 起点（上端中点）
+  context.lineTo(150, 150); // 终点（下端中点）
+  context.stroke();
+
+  context.beginPath();
+  context.moveTo(0, 75); // 起点（左端中点）
+  context.lineTo(300, 75); // 终点（右端中点）
+  context.stroke();
+
+  context.closePath();
 }
 
 async function screenshotPage() {
@@ -67,6 +78,8 @@ async function screenshotPage() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   ctx?.drawImage(imageBitmap, 0, 0);
+
+  track.stop();
 
   return { canvas, imageBitmap };
 }
@@ -96,4 +109,13 @@ function createGlass(width, height) {
   canvas.style.zIndex = "999999";
   document.body.appendChild(canvas);
   return canvas;
+}
+
+function getCenterColor(canvas, x, y) {
+  const ctx = canvas.getContext("2d");
+
+  const pixelData = ctx.getImageData(x, y, 1, 1).data; // [R, G, B, A]
+
+  const [r, g, b, a] = pixelData;
+  return `rgba(${r}, ${g}, ${b}, ${a / 255})`;
 }
